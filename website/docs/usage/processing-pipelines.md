@@ -92,6 +92,26 @@ have to call `list()` on it first:
 
 </Infobox>
 
+It is possible to save metadata when processing texts with [`nlp.pipe`](/api/language#pipe). The metadata will be saved to a [`custom attribute extension`](#custom-components-attributes).
+
+```
+### {executable="true"}
+import spacy
+from spacy.tokens import Doc
+
+if not Doc.has_extension('textid'):
+  Doc.set_extension('textid', default=None)
+  
+texts = [
+  ("This is the first text.", {"textid": "text1"}),
+  ("This is the second text.", {"textid": "text2"})
+]
+
+nlp = spacy.load('en_core_web_sm')
+for doc, metadata in nlp.pipe(texts, as_tuples=True):
+    doc._.textid = metadata["textid"]
+```
+
 ## Pipelines and built-in components {#pipelines}
 
 spaCy makes it very easy to create your own pipelines consisting of reusable
